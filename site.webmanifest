@@ -1,0 +1,8 @@
+{
+  "name": "Peek-A-Sound",
+  "short_name": "Peek-A-Sound",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#fbfaf4",
+  "theme_color": "#0b3b42"
+}
