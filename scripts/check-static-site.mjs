@@ -22,9 +22,9 @@ const requiredHtmlPatterns = [
   /<meta\s+name="viewport"/,
   /<meta\s+name="description"/,
   /<link\s+rel="canonical"\s+href="https:\/\/peekasound\.com\/"/,
-  /<link\s+rel="icon"\s+href="favicon\.svg"/,
-  /<link\s+rel="manifest"\s+href="site\.webmanifest"/,
-  /<link\s+rel="stylesheet"\s+href="styles\.css"/,
+  /<link\s+rel="icon"\s+href="favicon\.svg\?v=\d+"/,
+  /<link\s+rel="manifest"\s+href="site\.webmanifest\?v=\d+"/,
+  /<link\s+rel="stylesheet"\s+href="styles\.css\?v=\d+"/,
 ];
 
 async function readRequiredFile(path) {
