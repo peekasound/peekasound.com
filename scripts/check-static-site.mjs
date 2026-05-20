@@ -13,15 +13,18 @@ const requiredHtmlSnippets = [
   '<html lang="en">',
   '<title>Peek-A-Sound</title>',
   '<main class="site-shell">',
+  'data-contact-email',
+  'data-local="aGVsbG8="',
+  'data-domain="cGVla2Fzb3VuZC5jb20="',
 ];
 
 const requiredHtmlPatterns = [
   /<meta\s+name="viewport"/,
   /<meta\s+name="description"/,
   /<link\s+rel="canonical"\s+href="https:\/\/peekasound\.com\/"/,
-  /<link\s+rel="icon"\s+href="\/favicon\.svg"/,
-  /<link\s+rel="manifest"\s+href="\/site\.webmanifest"/,
-  /<link\s+rel="stylesheet"\s+href="\/styles\.css"/,
+  /<link\s+rel="icon"\s+href="favicon\.svg"/,
+  /<link\s+rel="manifest"\s+href="site\.webmanifest"/,
+  /<link\s+rel="stylesheet"\s+href="styles\.css"/,
 ];
 
 async function readRequiredFile(path) {
@@ -55,6 +58,9 @@ const files = new Map(
 );
 
 const html = files.get('index.html');
+const contactAddress = ['hello', 'peekasound.com'].join('@');
+const contactHref = `mailto:${contactAddress}`;
+
 for (const snippet of requiredHtmlSnippets) {
   assertIncludes(html, snippet, 'index.html');
 }
@@ -67,6 +73,10 @@ for (const pattern of requiredHtmlPatterns) {
 
 if (files.get('CNAME').trim() !== 'peekasound.com') {
   throw new Error('CNAME must contain peekasound.com');
+}
+
+if (html.includes(contactAddress) || html.includes(contactHref)) {
+  throw new Error('index.html must not expose the raw contact email address');
 }
 
 assertValidJson(files.get('site.webmanifest'), 'site.webmanifest');
