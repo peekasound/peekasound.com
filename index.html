@@ -6,63 +6,104 @@
     <title>Peek-A-Sound</title>
     <meta
       name="description"
-      content="Peek-A-Sound is a playful early learning experience for listening, naming, and discovering sounds."
+      content="Peek-A-Sound is a playful sound-discovery app for young learners, now in early development."
     />
-    <meta name="theme-color" content="#0b3b42" />
+    <meta name="theme-color" content="#f31f1f" />
     <meta property="og:title" content="Peek-A-Sound" />
     <meta
       property="og:description"
-      content="A playful early learning experience for listening, naming, and discovering sounds."
+      content="A playful sound-discovery app for young learners, now in early development."
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://peekasound.com/" />
     <link rel="canonical" href="https://peekasound.com/" />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="manifest" href="/site.webmanifest" />
-    <link rel="stylesheet" href="/styles.css" />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="manifest" href="site.webmanifest" />
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <main class="site-shell">
       <section class="hero" aria-labelledby="page-title">
         <div class="hero-copy">
-          <p class="eyebrow">Coming soon</p>
           <h1 id="page-title">Peek-A-Sound</h1>
           <p class="lede">
-            A playful early learning experience for listening, naming, and
-            discovering the sounds all around us.
+            A playful sound-discovery app for young learners.
           </p>
+          <p class="status">In early development.</p>
         </div>
 
-        <div class="sound-scene" aria-hidden="true">
-          <div class="sound-card sound-card-primary">
-            <span class="sound-icon">pa</span>
-            <span class="sound-wave"></span>
-            <span class="sound-wave short"></span>
+        <div class="comic-scene" aria-hidden="true">
+          <div class="burst">
+            <div class="sound-button">
+              <span class="speaker"></span>
+              <span class="wave wave-one"></span>
+              <span class="wave wave-two"></span>
+            </div>
           </div>
-          <div class="sound-card sound-card-secondary">
-            <span class="sound-dot"></span>
-            <span class="sound-dot"></span>
-            <span class="sound-dot"></span>
-          </div>
+          <div class="tile tile-yellow">cat</div>
+          <div class="tile tile-blue">car</div>
+          <div class="tile tile-pink">piano</div>
+          <div class="tile tile-green">drum</div>
+          <div class="spark spark-one"></div>
+          <div class="spark spark-two"></div>
+          <div class="star star-one"></div>
+          <div class="star star-two"></div>
         </div>
       </section>
 
-      <section class="launch-notes" aria-label="Launch details">
-        <article>
-          <h2>Built for curious ears</h2>
+      <section id="contact" class="note" aria-label="Launch note">
+        <div>
+          <h2>Coming soon</h2>
           <p>
-            Peek-A-Sound will help children connect sounds with words,
-            pictures, and everyday moments through short, approachable play.
+            We are shaping a bright, simple experience for curious ears.
           </p>
-        </article>
-        <article>
-          <h2>Simple first launch</h2>
-          <p>
-            This first page keeps the public presence lightweight while the
-            product takes shape.
-          </p>
-        </article>
+        </div>
+        <a
+          href="#contact"
+          data-contact-email
+          data-local="aGVsbG8="
+          data-domain="cGVla2Fzb3VuZC5jb20="
+          aria-label="Email Peek-A-Sound"
+        >
+          Say hello
+        </a>
       </section>
     </main>
+    <script>
+      (() => {
+        const contactLink = document.querySelector("[data-contact-email]");
+
+        if (!contactLink) {
+          return;
+        }
+
+        const getContactHref = () => {
+          const local = atob(contactLink.dataset.local || "");
+          const domain = atob(contactLink.dataset.domain || "");
+
+          return local && domain ? `mailto:${local}@${domain}` : "";
+        };
+
+        const setContactTarget = () => {
+          const href = getContactHref();
+
+          if (href) {
+            contactLink.href = href;
+          }
+        };
+
+        contactLink.addEventListener("mousedown", setContactTarget, {
+          once: true,
+        });
+        contactLink.addEventListener("pointerdown", setContactTarget, {
+          once: true,
+        });
+        contactLink.addEventListener("pointerenter", setContactTarget, {
+          once: true,
+        });
+        contactLink.addEventListener("focus", setContactTarget, { once: true });
+        contactLink.addEventListener("keydown", setContactTarget);
+      })();
+    </script>
   </body>
 </html>

@@ -3,6 +3,6 @@
   "short_name": "Peek-A-Sound",
   "start_url": "/",
   "display": "browser",
-  "background_color": "#fbfaf4",
-  "theme_color": "#0b3b42"
+  "background_color": "#f31f1f",
+  "theme_color": "#f31f1f"
 }
