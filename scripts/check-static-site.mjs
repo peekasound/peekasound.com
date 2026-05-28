@@ -1,8 +1,16 @@
 import { readFile } from 'node:fs/promises';
 
 const requiredFiles = [
+  'android-chrome-192x192.png',
+  'android-chrome-512x512.png',
+  'apple-touch-icon.png',
   'CNAME',
-  'favicon.svg',
+  'favicon.ico',
+  'favicon-16x16.png',
+  'favicon-32x32.png',
+  'favicon-48x48.png',
+  'icon-1024.png',
+  'icon-source.png',
   'index.html',
   'site.webmanifest',
   'styles.css',
@@ -22,7 +30,10 @@ const requiredHtmlPatterns = [
   /<meta\s+name="viewport"/,
   /<meta\s+name="description"/,
   /<link\s+rel="canonical"\s+href="https:\/\/peekasound\.com\/"/,
-  /<link\s+rel="icon"\s+href="favicon\.svg\?v=\d+"/,
+  /<link\s+rel="icon"\s+href="favicon\.ico\?v=\d+"\s+sizes="any"/,
+  /<link\s+rel="icon"\s+href="favicon-32x32\.png\?v=\d+"\s+sizes="32x32"\s+type="image\/png"/,
+  /<link\s+rel="icon"\s+href="favicon-16x16\.png\?v=\d+"\s+sizes="16x16"\s+type="image\/png"/,
+  /<link\s+rel="apple-touch-icon"\s+href="apple-touch-icon\.png\?v=\d+"/,
   /<link\s+rel="manifest"\s+href="site\.webmanifest\?v=\d+"/,
   /<link\s+rel="stylesheet"\s+href="styles\.css\?v=\d+"/,
 ];
@@ -45,7 +56,7 @@ function assertIncludes(content, snippet, file) {
 
 function assertValidJson(content, file) {
   try {
-    JSON.parse(content);
+    return JSON.parse(content);
   } catch (error) {
     throw new Error(`${file} must contain valid JSON`, { cause: error });
   }
@@ -79,10 +90,23 @@ if (html.includes(contactAddress) || html.includes(contactHref)) {
   throw new Error('index.html must not expose the raw contact email address');
 }
 
-assertValidJson(files.get('site.webmanifest'), 'site.webmanifest');
+const manifest = assertValidJson(files.get('site.webmanifest'), 'site.webmanifest');
+const manifestIcons = manifest.icons ?? [];
+const requiredManifestIcons = new Map([
+  ['/android-chrome-192x192.png', '192x192'],
+  ['/android-chrome-512x512.png', '512x512'],
+]);
 
-if (!files.get('favicon.svg').includes('<svg')) {
-  throw new Error('favicon.svg must contain an SVG root element');
+for (const [src, sizes] of requiredManifestIcons) {
+  const icon = manifestIcons.find((candidate) => candidate.src === src);
+
+  if (!icon) {
+    throw new Error(`site.webmanifest must include ${src}`);
+  }
+
+  if (icon.sizes !== sizes || icon.type !== 'image/png') {
+    throw new Error(`site.webmanifest must define ${src} as ${sizes} image/png`);
+  }
 }
 
 if (!files.get('styles.css').includes('.site-shell')) {
